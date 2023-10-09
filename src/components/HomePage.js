@@ -15,9 +15,9 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
+// import AdbIcon from '@mui/icons-material/Adb';
 import {useNavigate, Link} from 'react-router-dom'
-import Grid from '@mui/material/Grid';
+// import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab';
@@ -29,17 +29,22 @@ import Autocomplete from '@mui/material/Autocomplete';
 import InputLabel from '@mui/material/InputLabel';
 import Dialog from '@mui/material/Dialog';
 import CloseIcon from '@mui/icons-material/Close';
-import Slide from '@mui/material/Slide';
-import InputAdornment from '@mui/material/InputAdornment';
+// import Slide from '@mui/material/Slide';
+// import InputAdornment from '@mui/material/InputAdornment';
 import FormControl, { useFormControl } from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 
+import { styled } from '@mui/material/styles';
+
+
+// import SearchIcon from "@mui/icons-material/Search";
+
 import OrderHistory from './orderHistory';
-import CreateOrder from './createOrder';
+
 import { useSelector, useDispatch } from 'react-redux'
-import {AddPoultryProduct, AddCatFishProduct,AddPigProduct, AddEggProduct, ClearError, ClearMessage, GetUser} from "../Actions/Actions"
+import {AddProducts, ClearError, ClearMessage, GetUser, GetProducts, GetOrder} from "../Actions/Actions"
 import Select from '@mui/material/Select';
 
 
@@ -48,14 +53,21 @@ import Select from '@mui/material/Select';
 
 
 
- const HomePage=()=> {
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
 
+
+
+
+
+
+ const HomePage=()=> {
+
+    const dispatch = useDispatch()
     useEffect(()=>{
       document.body.style.zoom = "70%";
       dispatch(GetUser())
-    
+      dispatch(GetProducts())
+      dispatch(GetOrder())
+      dispatch(ClearError())
     },[])
     
 
@@ -65,14 +77,11 @@ import Select from '@mui/material/Select';
   const message = useSelector((state)=>state?.user?.message)
   const error = useSelector((state)=>state?.user?.error)
   const loading = useSelector((state)=>state?.user?.loading)
+  const orders = useSelector((state)=>state?.user?.order)
 
-  
 
 const pages = ['About Us', 'Contact Us'];
 const settings = [ 'Logout', 'Reset Password','Profile', 'Dashboard',];
-
-
-
 
 
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -89,19 +98,18 @@ const settings = [ 'Logout', 'Reset Password','Profile', 'Dashboard',];
 
   const [products, setProducts] = useState({
     section:'',
+    category:"",
     quantity:'',
     weight:'',
     user:'',
     price:"",
   })
 
-  const {section, quantity, weight, user, price} = products
+  const {section, quantity, weight, user, price, category} = products
   products.section = selectedCategory
- const User = JSON.parse(sessionStorage.getItem("user"))
- products.user = User?._id
-
-
-
+ const User = JSON.parse(sessionStorage?.getItem("user"))
+ products.user = User?.id
+ products.category = selectedProduct
 
 
   function Copyright(props) {
@@ -118,32 +126,24 @@ const settings = [ 'Logout', 'Reset Password','Profile', 'Dashboard',];
   }
   
 
-
-
   const ProductData = {
     product: [
  
-      { name: "poultry", category: ["Layers", "Broilers"] },
-      { name: "pig", category: ["Boar", "Dry Sows", "In-pigs", "Growers", "Weaners", "Piglets"] },
-      { name: "egg", category: ["Big", "Small"] },
-      { name: "cat Fish", category: ["Fingerlings", "Mature"] },
-  
- 
-   
- 
+      { name: "Poultry", category: ["Layers", "Broilers"] },
+      { name: "Pig", category: ["Boar", "Dry Sows", "In-pigs", "Growers", "Weaners", "Piglets"] },
+      { name: "Egg", category: ["Big", "Small"] },
+      { name: "Cat-fish", category: ["Fingerlings", "Mature"] },
     ]
   };
 
 
 
-
+// what this does is, depending on the Product i select, it populates the section attached to the product on the section dropdown select... start
   
   const availableProduct = ProductData.product.find((c) => c.name === selectedProduct);
   const availableCategory = availableProduct?.category?.find((s) => s.name === selectedProduct);
 
-
-
-
+// what this does is, depending on the Product i select, it populates the section attached to the product on the section dropdown select.. end
 
 
 
@@ -162,47 +162,17 @@ const settings = [ 'Logout', 'Reset Password','Profile', 'Dashboard',];
 
   }
 
-  const handleSubmitPoultry = (e)=>{
+  const handleSubmit = (e)=>{
     e.preventDefault()
-    const product = {section, quantity,price, user}
-     dispatch(AddPoultryProduct(product))
+    const product = {section, quantity,price, weight, user, category}
+     dispatch(AddProducts(product))
 
 
    
 
   }
 
-  const handleSubmitPig = (e)=>{
-    e.preventDefault()
-    const product = {section, quantity, weight, price, user}
-     dispatch(AddPigProduct(product))
 
-   
-
-  }
-
-
-  const handleSubmitEgg = (e)=>{
-    e.preventDefault()
-
-    const product = {section, quantity, price, user}
-     dispatch(AddEggProduct(product))
-  
-
-   
-
-  }
-
-
-  const handleSubmitCatFish = (e)=>{
-    e.preventDefault()
-    const product = {section, quantity, weight, price, user}
-     dispatch(AddCatFishProduct(product))
-  
-
-   
-
-  }
 
   
 const handleFocus = () => {
@@ -245,13 +215,9 @@ const handleFocus = () => {
 
     setTimeout(()=>{
       if(message){
-
         dispatch(ClearMessage())
-        setProductDialog(false);
       }
-    
-   
-    },3000)
+    },1500)
 
 
 
@@ -266,16 +232,6 @@ const handleFocus = () => {
     }
   };
 
-  
-    const handleClickOpenFinishedOrder = (e) => {
-        setFinishedOrder(true);
-    };
-  
-    const handleCloseFinishedOrder  = () => {
-        setFinishedOrder(false);
-    };
-
-  
     const handleClickOpen = () => {
       setOpen(true);
     };
@@ -304,12 +260,7 @@ const handleFocus = () => {
 
 
 
-  const top100Films = [
-    { label: 'Inventory', year: 1994 },
-    { label: 'Sales', year: 1972 },
-    { label: 'Event', year: 1974 },
-
-  ];
+  
 
  
 
@@ -449,429 +400,83 @@ const handleFocus = () => {
 
 
 
-  
 
-
- 
-    
-
-
-
-
- 
     <Typography variant="h5" component="div" className="text-uppercase" sx={{textAlign:'center', mt:20, fontWeight:600, fontFamily:'sans-serif', color:'black'}} >
       Welcome, {UserInfo?.lastName}   
       </Typography>
 
 
+{/* 
+cards on Homepage  for order History, create Order and Add Products Start */}
 
-     <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          p: 1,
-          m: 1,
-          mt:15,
-   
-          borderRadius: 1,
-          cursor:'pointer'
-        }}
-      >
-    <Badge badgeContent={7} color="success"  sx={{mr:13,  }}>
-<Card sx={{ minWidth: 275 }}>
+     <Box sx={{ display: 'flex', justifyContent: 'center',p: 1, m: 1, mt:15, borderRadius: 1,cursor:'pointer' }}>
+
+    <Badge badgeContent={orders?.length} color="success"  sx={{mr:13,  }}>
+    <Card sx={{ minWidth: 275 }}>
       <CardContent>
-    
       <Tooltip title="Click To See All Order Entries" sx={{cursor:'pointer'}}>
-      
-   
       <Typography variant="h5" component="div" onClick={handleClickOpen1}>
       Order Entries   <Fab  aria-label="add" sx={{ml:5, backgroundColor:'#006400', color:'white'}}><ApprovalIcon /></Fab>
       </Typography>
       </Tooltip>
-    
-
       </CardContent>
-
     </Card>
     </Badge> 
 
 
+
+
+    <Link to="/products">
      <Card sx={{ minWidth: 275 }}>
       <CardContent>
-    
-      <Tooltip title="Add Entries" sx={{cursor:'pointer'}}>
-      
-   
         <Typography variant="h5" component="div" onClick={handleClickOpen}>
         Create Order Entries   <Fab  aria-label="add" sx={{ml:5, backgroundColor:'#006400', color:'white'}}><AddIcon /></Fab>
         </Typography>
-        </Tooltip>
-  
       </CardContent>
-   
     </Card> 
+    </Link>
 
 
 
     <Card sx={{ minWidth: 275, ml:15 }}>
       <CardContent>
-    
       <Tooltip title="Add Products" sx={{cursor:'pointer'}}>
-      
-   
         <Typography variant="h5" component="div" onClick={HandleOpenProduct}>
         Add Products  <Fab  aria-label="add" sx={{ml:5, backgroundColor:'#006400', color:'white'}}><AddIcon /></Fab>
         </Typography>
         </Tooltip>
-  
       </CardContent>
-   
     </Card>
-
       </Box>
-
-
-      <div>
-
-      <Dialog
-        fullScreen
-        open={open}
-        onClose={handleClose}
-        // TransitionComponent={Transition}
-      >
-        <AppBar sx={{ position: 'relative', backgroundColor:"#006400" }}>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-            <Typography sx={{ ml: 100, flex: 1 }} variant="h6" component="div">
-              Create Order Entries
-            </Typography>
-
-            
-
-
-          
-          </Toolbar>
-        </AppBar>
-
-   
-
-        <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          p: 1,
-          m: 1,
-          mt:10,
-          bgcolor: 'background.paper',
-          borderRadius: 1,
-        }}
-      >
-
-        
-    <Autocomplete
-      disablePortal
-      id="combo-box-demo"
-      options={['Inventory','Sales', 'Event' ]}
-      sx={{ mr:10, width: 500 }}
-      renderInput={(params) => <TextField {...params} label="Category" />}
-    />
-
-<Autocomplete
-      disablePortal
-      id="combo-box-demo"
-      options={['Inventory','Sales', 'Event' ]}
-      sx={{ mr:10, width: 500 }}
-      renderInput={(params) => <TextField {...params} label="Produce" />}
-    />
-
-
-
-
-<TextField
-          label="Amount"
-          id="outlined-start-adornment"
-          sx={{ width: 500 }}
-          InputProps={{
-            startAdornment: <InputAdornment position="start">Kg</InputAdornment>,
-          }}
-        />
-    </Box>
-
-
-
-    <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          p: 1,
-          m: 1,
-          mt:5,
-          bgcolor: 'background.paper',
-          borderRadius: 1,
-        }}
-      >
-
-        
-
-<TextField
-          label="With normal TextField"
-          id="outlined-start-adornment"
-          sx={{ mr:10, width: 500 }}
-          InputProps={{
-            startAdornment: <InputAdornment position="start">kg</InputAdornment>,
-          }}
-        />
-
-<TextField
-          label="Qty/Weight"
-          id="outlined-start-adornment"
-          sx={{ mr:10, width: 500 }}
-          InputProps={{
-            startAdornment: <InputAdornment position="start">kg</InputAdornment>,
-          }}
-        />
-
-
-<TextField
-          label="With normal TextField"
-          id="outlined-start-adornment"
-          sx={{  width: 500 }}
-          InputProps={{
-            startAdornment: <InputAdornment position="start">kg</InputAdornment>,
-          }}
-        />
-  
-
-    </Box>
-
-
-    <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          p: 1,
-          m: 1,
-          mt:2,
-          bgcolor: 'background.paper',
-          borderRadius: 1,
-        }}
-      >
-
-        
-<FormControl fullWidth sx={{ m: 1, width:600 }}>
-          <InputLabel htmlFor="outlined-adornment-amount">Total Amount</InputLabel>
-          <OutlinedInput
-            id="outlined-adornment-amount"
-            startAdornment={<InputAdornment position="start">$ </InputAdornment>}
-            label="Total Amount"
-          />
-        </FormControl>
-
-
-  
-
-    </Box>
-
-  
-
-    <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          p: 1,
-          m: 1,
-          mt:2,
-          bgcolor: 'background.paper',
-          borderRadius: 1,
-        }}
-      >
-
-
-
-<Box sx={{mr:12}}>
-<a href="#" className="btn btn-success"  style={{backgroundColor:'#006400'}} onClick={handleCloseFinishedOrder}>Add Another  <Fab color="white" aria-label="add" sx={{ml:3, color:'#006400'}} ><AddIcon /></Fab></a>
-</Box>
-
-<Box sx={{pr:5}}>
-<a href="#" className="btn btn-success"  style={{backgroundColor:'#006400',}} onClick={handleClickOpenFinishedOrder} >Finish Order Entry <Fab  aria-label="add" sx={{ml:5,  color:'#006400'}}><ApprovalIcon /></Fab> </a>
-</Box>
-
-        
-
-
-    </Box>
-
-
-
-
-
-    <div>
-   
-      <Dialog
-  fullScreen
- 
-  
-        open={finishedOrder}
-        // TransitionComponent={Transition}
       
-        onClose={handleCloseFinishedOrder}
-        aria-describedby="alert-dialog-slide-description"
-      >
-
-<AppBar sx={{ position: 'relative',  backgroundColor: '#006400' }}>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleCloseFinishedOrder}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-            <Typography sx={{ ml: 100, flex: 1 }} variant="h6" component="div">
-               Order Summary
-            </Typography>
-        
-          </Toolbar>
-        </AppBar>
-        <br/>
- 
-    
-
-
-    <CreateOrder/>
-    <br/>
-
-    <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          p: 1,
-          m: 1,
-          mt:2,
-          bgcolor: 'background.paper',
-          borderRadius: 1,
-        }}
-      >
-
-
-<Card sx={{ minWidth: 275, mr:10}}>
-      <CardContent>
-    
-      <Tooltip title="Total Amount of All Entries" >
-      
-   
-      <Typography  color="text.secondary" gutterBottom>
-      Total Amount :  $ XX2359
-        </Typography>
-
-        </Tooltip>
-  
-      </CardContent>
-   
-    </Card>
-        
-    <Autocomplete
-      disablePortal
-      id="combo-box-demo"
-      options={top100Films}
-      sx={{  width: 300 }}
-      renderInput={(params) => <TextField {...params} label="Payment Type" />}
-    />
-
-    </Box>
-
-    <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          p: 1,
-          ml: 3,
-          mt:2,
-          bgcolor: 'background.paper',
-          borderRadius: 1,
-        }}
-      >
-
-<Box sx={{mr:12}}>
-<a href="#" className="btn btn-success"  style={{backgroundColor:'#006400'}} onClick={handleCloseFinishedOrder}>Add Another Order <Fab color="white" aria-label="add" sx={{ml:3, color:'#006400'}} ><AddIcon /></Fab></a>
-</Box>
-
-<Box sx={{pr:5}}>
-<a href="#" className="btn btn-success"  style={{backgroundColor:'#006400'}} >Submit Order Entry <Fab  aria-label="add" sx={{ml:5, color:'#006400'}}><ApprovalIcon /></Fab> </a>
-</Box>
-
-
-
-
-  
-
-    </Box>
-    <br/>
-      </Dialog>
-    </div>
-      </Dialog>
-    </div>
+{/* cards on Homepage  for order History, create Order and Add Products end */}
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+{/* Modal showing Order History end, Please check how i imported the OrderHistory component in the Modal*/}
     <div>
-
-<Dialog
-  fullScreen
-  open={open1}
-  onClose={handleClose1}
-  // TransitionComponent={Transition}
->
+<Dialog fullScreen open={open1} onClose={handleClose1}>
   <AppBar sx={{ position: 'relative', backgroundColor: '#006400'  }}>
     <Toolbar>
       <IconButton
         edge="start"
         color="inherit"
         onClick={handleClose1}
-        aria-label="close"
-      >
+        aria-label="close">
         <CloseIcon />
       </IconButton>
       <Typography sx={{ ml: 110, flex: 1 }} variant="h6" component="div">
-        My Order History
+        My Order Entries
       </Typography>
-
-   
-    
     </Toolbar>
   </AppBar>
   <br/>
-
-
-
     <OrderHistory/>
-
-
 </Dialog>
 </div>
+{/* Modal showing Order History end , Please check how i imported the OrderHistory component in the Modal*/}
 
 
 
@@ -879,70 +484,56 @@ const handleFocus = () => {
 
 
 
+{/* Adding Product Modal start */}
 
 
-
-<div>
-      
+<div> 
       <Dialog
         open={productDialog}
         onClose={handleCloseProduct}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         fullWidth
-        maxWidth="lg"
-
-      >
+        maxWidth="lg">
+        <Box sx={{display:"flex", justifyContent:'space-between'}}>
         <DialogTitle id="alert-dialog-title">
           {"Add Products"}
         </DialogTitle>
+        <CloseIcon sx={{marginTop:2, mr:5, fontSize:30, fontWeight:900, color:'red', cursor: 'pointer'}} onClick={handleCloseProduct}/>
+        </Box>
+       
 
 
-
-
-
-
-        
          {loading && error === false ?
           <div className='loader'></div> : ""}
           <br/> 
 
 
-   {message &&  
-
-<div className="alert success alert-success alert-dismissible" role="alert" style={{width:'50%', margin:'0px auto'}}>
-<div className="container" style={{width:'50%', margin:'0px auto'}}>
-
-<strong > <i className="fa fa-thumbs-up" aria-hidden="true"></i></strong> {message} !
-
+          {message && 
+<div className="alert success alert-success alert-dismissible" role="alert" style={{width:'30%', margin:'0px auto'}}>
+<div className="containerss"  style={{textAlign:'center', margin:'0px auto', whiteSpace:'no-wrap'}}>
+<strong> <i className="fa fa-thumbs-up" aria-hidden="true"></i></strong> {message}!
 </div>
 </div>
- }
+}
 
 
 
 {error &&
-<div className="alert alert-danger danger alert-dismissible" role="alert" style={{width:'80%', margin:'0px auto'}}>
-<div className="container"  style={{textAlign:'center',  margin:'0px auto', whiteSpace:'no-wrap'}}>
-
+<div className="alert alert-danger danger alert-dismissible" role="alert" style={{width:'40%', margin:'0px auto'}}>
+<div className="containerss"  style={{textAlign:'center',  margin:'0px auto', whiteSpace:'no-wrap'}}>
 <strong>  <i className="fa fa-exclamation-circle" aria-hidden="true"></i></strong>  {error}!
-
-
-
-
 </div>
 </div>  
  }
 
 
 
-<form>
-        
+<form>  
         <Box
         sx={{
           display: 'flex',
           justifyContent: 'center',
-        //  flexWrap:'wrap',
           textAlign:'center',
           alignItems:'center',
           p: 1,
@@ -950,12 +541,8 @@ const handleFocus = () => {
           mt:5,
           bgcolor: 'background.paper',
           borderRadius: 1,
-        }}
-      >
-
-        
+        }}>
         <Box sx={{mr:30}}>
-
               <FormControl sx={{  width: 150 }}>
                 <InputLabel id="demo-multiple-name-label">Select Product...</InputLabel>
                 <Select
@@ -966,11 +553,9 @@ const handleFocus = () => {
                   fullWidth
                   onFocus={handleFocus}
                   input={<OutlinedInput label="Select State..." />}
-                  onChange={(e) => setSelectedProduct(e.target.value)}
-                >
+                  onChange={(e) => setSelectedProduct(e.target.value)}>
                   {ProductData.product.map((value, key) => (
                     <MenuItem key={key} value={value.name}> 
-                      
                       {value.name}
                     </MenuItem>
                   ))}
@@ -986,13 +571,11 @@ const handleFocus = () => {
                 <Select
                   sx={{ width: 330, height: 55 }}
                   labelId="demo-multiple-name-label"
-                  
                   id="demo-multiple-name"
                   value={selectedCategory}
                   onFocus={handleFocus}
                   input={<OutlinedInput label="Select Local Government..." />}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                >
+                  onChange={(e) => setSelectedCategory(e.target.value)}>
                   {availableProduct?.category.map((e, key) => (
                     <MenuItem key={key} value={e}>
                       {e}
@@ -1003,33 +586,25 @@ const handleFocus = () => {
               </Box>
               
           
-     
-
-<Box sx={{ml:30}}>
-<TextField
-          label="Quantity"
-          id="outlined-start-adornment"
-          sx={{ width: 330 }}
-          onChange={handleChange}
-          name='quantity'
-          value={quantity}
-          onFocus={handleFocus}
-        
-        /> 
-
-
-
-</Box>
-
- 
-    </Box><br/>
+       
+               <Box sx={{ml:30}}>
+                <TextField
+                label="Quantity"
+                id="outlined-start-adornment"
+                sx={{ width: 330 }}
+                 onChange={handleChange}
+                 name='quantity'
+                 value={quantity}
+                onFocus={handleFocus}/> 
+                 </Box>
+               </Box><br/>
 
 
 
 
 
 
-    <Box
+           <Box
         sx={{
           display: 'flex',
           justifyContent: 'flex-start',
@@ -1041,8 +616,8 @@ const handleFocus = () => {
         }}
       >
 
-<Box sx={{ml:4}}>
-<TextField
+          <Box sx={{ml:4}}>
+           <TextField
           label="Price"
           id="outlined-start-adornment"
           sx={{ width: 330 }}
@@ -1050,18 +625,13 @@ const handleFocus = () => {
           name='price'
           value={price}
           onFocus={handleFocus}
-        
         /> 
+        </Box>
 
 
 
-</Box>
-
-
-    {selectedProduct === 'cat Fish' ||  selectedProduct === 'pig' ?
-
-    <Box sx={{ml:8}}>
-<TextField
+          <Box sx={{ml:8}}>
+         <TextField
           label="Weight (kg)"
           id="outlined-start-adornment"
           sx={{ width: 330 }}
@@ -1069,77 +639,21 @@ const handleFocus = () => {
           name='weight'
           value={weight}
           onFocus={handleFocus}
-        
         /> 
 
+       </Box>
+   </Box>
+</form><br/>
 
-
-</Box>:""}
-
-
-
-
-
-
-
-
-
-
-
-</Box>
-
-    </form><br/>
-
-
- 
-
-   
         <DialogActions>
-
-          {selectedProduct === 'poultry' ?
-
         <div className="form-group focused" style={{marginRight:10}}>
-                  <a href="#!" className="btn btn-success"  style={{backgroundColor:'#006400', }}  onClick={handleSubmitPoultry}>Add Product </a>
-                  
-                  </div> : ""}
- 
-
-
-
-{selectedProduct === 'pig' ?
-                  
-        <div className="form-group focused" style={{marginRight:10}}>
-                  <a href="#!" className="btn btn-success"  style={{backgroundColor:'#006400', }} onClick={handleSubmitPig} >Add Product </a>
-                  
-                  </div> : ""
- }
-
-
-
-
-{selectedProduct === "egg" ?
-
-                  
-        <div className="form-group focused" style={{marginRight:10}}>
-                  <a href="#!" className="btn btn-success"  style={{backgroundColor:'#006400', }} onClick={handleSubmitEgg} >Add Product  </a>
-                  
-                  </div> :
-""}
-
-
-               {selectedProduct === "cat Fish" ?   
-        <div className="form-group focused" style={{marginRight:10}}>
-                  <a href="#!" className="btn btn-success"  style={{backgroundColor:'#006400', }} onClick={handleSubmitCatFish}  >Add Product  </a>
-                  
-                  </div>: ""}
-                  
-  
-         
+            <a href="#!" className="btn btn-success"  style={{backgroundColor:'#006400', }}  onClick={handleSubmit}>Add Product </a>
+            </div>
         </DialogActions>
       </Dialog>
-    </div>
+    </div> 
 
-
+{/* Adding Product Modal end */}
 
 
 

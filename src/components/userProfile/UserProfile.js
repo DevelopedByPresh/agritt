@@ -33,6 +33,7 @@ const UserProfile = ()=>{
   const {firstName, lastName, email, date_of_birth} = user
 
   useEffect(()=>{
+    dispatch(ClearError());
     if(UserInfo){
       setUser(UserInfo)
     }
@@ -54,6 +55,7 @@ const UserProfile = ()=>{
 
 
   const handleFocus = () => {
+    
     if (error) {
       dispatch(ClearError());
     }

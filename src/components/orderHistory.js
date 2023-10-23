@@ -36,7 +36,7 @@ import {useSelector} from "react-redux"
   
 
   const Orders = useSelector((state)=>state?.user?.order)
-  console.log(Orders)
+
 
 
   const [tableBodyHeight, setTableBodyHeight] = useState("400px");
@@ -48,6 +48,7 @@ const [printBtn, setPrintBtn] = useState(true);
 const [viewColumnBtn, setViewColumnBtn] = useState(true);
 const [filterBtn, setFilterBtn] = useState(true);
  const [singleOrder, setSingleOrder] = useState({})
+
 
 
  const dateOfEntry = singleOrder?.createdAt
@@ -219,7 +220,7 @@ const [filterBtn, setFilterBtn] = useState(true);
    
 {Orders?.length > 0 ?
 
-<div style={{width:1600, margin:'0 auto', alignItems:'center', textAlign:'center'}}>
+<div style={{width:1800, marginLeft:80}}>
 <MUIDataTable
   title={ `My Order Entries`}
   data={data}
@@ -274,6 +275,16 @@ const [filterBtn, setFilterBtn] = useState(true);
           Date Of Entry : {`${FormattedDate}`}
           </DialogContentText>
           <br/>
+
+          <DialogContentText id="alert-dialog-description">
+        Product : {singleOrder?.cartId?.cartItems?.[0]?.productId?.category}
+          </DialogContentText><br/>
+
+
+          <DialogContentText id="alert-dialog-description">
+        Product  Setion : {singleOrder?.cartId?.cartItems?.[0]?.productId?.section}
+          </DialogContentText><br/>
+
 
           <DialogContentText id="alert-dialog-description">
         Total Quantity : {singleOrder?.cartId?.cartItems?.[0]?.quantity}

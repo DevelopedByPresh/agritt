@@ -17,7 +17,8 @@ const initialState = {
     orderMsg:null,
     active:true,
     order:[],
-    OneProduct:[]
+    OneProduct:[],
+    qty:1
 }
 
 
@@ -221,6 +222,8 @@ const UserReducer = (state=initialState, action) =>{
                               
                                   };
 
+                                  
+                           
                                   
                                 case TYPES.ACTIVE:
                                   return {

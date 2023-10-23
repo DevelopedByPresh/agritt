@@ -549,10 +549,10 @@ cards on Homepage  for order History, create Order and Add Products Start */}
                   sx={{ width: 330, height: 55 }}
                   labelId="demo-multiple-name-label"
                   id="demo-multiple-name"
-                  value={selectedProduct}
+                  value={selectedProduct || ""}
                   fullWidth
                   onFocus={handleFocus}
-                  input={<OutlinedInput label="Select State..." />}
+                  input={<OutlinedInput label="Select Product..." />}
                   onChange={(e) => setSelectedProduct(e.target.value)}>
                   {ProductData.product.map((value, key) => (
                     <MenuItem key={key} value={value.name}> 
@@ -572,9 +572,9 @@ cards on Homepage  for order History, create Order and Add Products Start */}
                   sx={{ width: 330, height: 55 }}
                   labelId="demo-multiple-name-label"
                   id="demo-multiple-name"
-                  value={selectedCategory}
+                  value={selectedCategory || ""}
                   onFocus={handleFocus}
-                  input={<OutlinedInput label="Select Local Government..." />}
+                  input={<OutlinedInput label="Select Category..." />}
                   onChange={(e) => setSelectedCategory(e.target.value)}>
                   {availableProduct?.category.map((e, key) => (
                     <MenuItem key={key} value={e}>

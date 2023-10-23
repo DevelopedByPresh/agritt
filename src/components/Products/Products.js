@@ -46,6 +46,8 @@ import { ClearError, ClearMessage, GetUser, GetProducts, AddToCart, GetCart, Del
 import "./Products.css"
 import Drawer from '@mui/material/Drawer';
 import { create } from '@mui/material/styles/createTransitions';
+import CardContent from '@mui/material/CardContent';
+import Card from '@mui/material/Card';
 
 
 // import List from '@mui/material/List';
@@ -121,6 +123,15 @@ const [querry, setQuerry] = useState('')
  const id = sessionStorage.getItem("cartID")
  const [qtyError, setQtyError] = useState('')
  const [cartQtyError, setCartQtyError] = useState('')
+ const [report, setReport] = useState('');
+ sessionStorage.setItem('category', report)
+ const category = sessionStorage.getItem('category')
+
+
+ const none = 0
+
+
+
 
 
  
@@ -162,6 +173,102 @@ const [querry, setQuerry] = useState('')
 
 
 
+
+
+
+const AllProduct = ()=>{
+
+  sessionStorage.setItem('category', '')
+  dispatch(GetProducts())
+  setQtyError('')
+
+}
+
+
+
+
+const PoultryProduct = (Poultry)=>{
+  setReport('Poultry')
+  sessionStorage.setItem('category', Poultry)
+  dispatch(GetProducts())
+  setQtyError('')
+
+}
+
+
+const PigProduct = (Pig)=>{
+  sessionStorage.setItem('category', Pig)
+  dispatch(GetProducts())
+  setQtyError('')
+
+}
+
+
+const EggProduct = (Egg)=>{
+
+  sessionStorage.setItem('category', Egg)
+  dispatch(GetProducts())
+
+  dispatch(ClearError())
+
+}
+
+
+const CatFishProduct = (CatFish)=>{
+  sessionStorage.setItem('category', CatFish)
+  dispatch(GetProducts())
+
+  setQtyError('')
+
+}
+
+
+const CowProduct = (Cow)=>{
+  sessionStorage.setItem('category', Cow)
+  dispatch(GetProducts())
+  setQtyError('')
+
+}
+
+
+
+
+
+const CucumberProduct = (Cucumber)=>{
+  sessionStorage.setItem('category', Cucumber)
+  dispatch(GetProducts())
+  setQtyError('')
+
+}
+
+
+const ManureProduct = (manure)=>{
+  sessionStorage.setItem('category', manure)
+  dispatch(GetProducts())
+  setQtyError('')
+
+}
+
+
+const PlantainProduct = (plantain)=>{
+  sessionStorage.setItem('category', plantain)
+  dispatch(GetProducts())
+  setQtyError('')
+
+}
+
+
+const FeedProduct = (feed)=>{
+  sessionStorage.setItem('category', feed)
+  dispatch(GetProducts())
+  setQtyError('')
+
+}
+
+
+
+
+
  const CompleteOrder =()=>{
 
 
@@ -196,6 +303,7 @@ const [querry, setQuerry] = useState('')
   if(product && product?.quantity > 1){
     product.quantity --
     setNumber(product?.quantity)
+
    
   }
  }
@@ -472,9 +580,20 @@ const list = (anchor) => (
               <div className="col-lg-3 col-md-18 mb-4 mb-lg-0" key={item?.id}>
 
 
-                {item?.productId?.category === 'Poultry' ?
+                {item?.productId?.category === 'Poultry' && item?.productId?.section === 'Layers' ?
                 <div className="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light" key={item?.id}>
                   <img src="https://thumbs.dreamstime.com/b/white-chicken-hen-isolated-d-illustration-white-chicken-hen-d-illustration-122513036.jpg?w=768"
+                    className="w-100" alt="product" />
+                  <a href="#!">
+               
+                  </a>
+                </div>:""}
+
+
+
+                {item?.productId?.category === 'Poultry' && item?.productId?.section === 'Broilers' ?
+                <div className="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light" key={item?.id}>
+                  <img src="https://thumbs.dreamstime.com/b/full-body-brown-chicken-hen-standing-isolated-white-backgroun-background-use-farm-animals-livestock-theme-50156210.jpg?w=768"
                     className="w-100" alt="product" />
                   <a href="#!">
                
@@ -491,13 +610,78 @@ const list = (anchor) => (
                 </div>:""}
 
 
-                {item?.productId?.category === 'Pig' ?
+                {item?.productId?.category === 'Pig' && item?.productId?.section ==='Piglets' ?
                 <div className="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
-                  <img src="https://thumbs.dreamstime.com/b/pig-isolated-white-big-background-130393074.jpg?w=768"className="w-100" alt="product" />
+                  <img src="https://thumbs.dreamstime.com/z/two-piglets-isolated-white-two-piglets-isolated-white-background-125596059.jpg?w=992"className="w-100" alt="product" />
                   <a href="#!">
                
                   </a>
                 </div>:""}
+
+
+                
+                {item?.productId?.category === 'Pig' && item?.productId?.section ==='Dry Sows' ?
+                <div className="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
+                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHPZCMj6oXFjszxSXKb_XN_B0zD8_6Ll8_Dg&usqp=CAU"className="w-100" alt="product" />
+                  <a href="#!">
+               
+                  </a>
+                </div>:""}
+
+
+
+                {item?.productId?.category === 'Pig' && item?.productId?.section ==='Growers' ?
+                <div className="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
+                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXU_82DbhkFCA6Kl4xVL8FAI5byjjhg96BZw&usqp=CAU"className="w-100" alt="product" />
+                  <a href="#!">
+               
+                  </a>
+                </div>:""}
+
+
+                
+                {item?.productId?.category === 'Pig' && item?.productId?.section ==='Boar' ?
+                <div className="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
+                  <img src="data:image/jpeg;base64,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" className="w-100" alt="product" />
+                  <a href="#!">
+               
+                  </a>
+                </div>:""}
+
+
+
+
+                {item?.productId?.category === 'Pig' && item?.productId?.section ==='Weaners' || item?.productId?.section ==='In-pigs' ?
+                <div className="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
+                  <img src="https://thumbs.dreamstime.com/b/pig-isolated-white-big-background-130393074.jpg?w=768" className="w-100" alt="product" />
+                  <a href="#!">
+               
+                  </a>
+                </div>:""}
+
+
+
+
+
+
+
+
+
+  
+      
+
+
+       
+
+
+
+
+
+
+
+
+
+
 
 
                 {item?.productId?.category === 'Cat-fish' ?
@@ -850,7 +1034,7 @@ const list = (anchor) => (
   
 
 
-{AllProducts?.length ===0 ? "" :
+{/* {AllProducts?.length ===0 ? "" :
 
     <Box sx={{display:'flex', justifyContent:'center', alignItems: 'center', marginTop:'30px'}}>
 
@@ -878,7 +1062,7 @@ InputProps={{
 </Container>
 
 </Box>}
-<br/>
+<br/> */}
 
 
           <div>
@@ -897,6 +1081,171 @@ InputProps={{
 
     </div>
     <br/>
+
+    <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-evenly',
+          p: 1,
+          m: 1,
+          mt:1,
+          mr:10,
+   
+          borderRadius: 1,
+          cursor:'pointer'
+        }}
+      >
+
+
+{/* <Badge badgeContent={pig?.length} color="success" > */}
+
+<StyledBadge badgeContent={0} color="success">
+<Tooltip title="Click To see All Products" sx={{cursor:'pointer'}}>
+    <Card sx={{ width: 125,height:50, cursor:'pointer' }} className="report" onClick={AllProduct}>
+      <CardContent>
+        <Typography variant="h6" component="div" sx={{textAlign:'center', whiteSpace:'nowrap', fontWeight:1000, fontSize:15, } }>
+        All 
+        </Typography>
+      </CardContent>
+    </Card>
+    </Tooltip>
+    </StyledBadge>
+
+
+
+<StyledBadge badgeContent={none} color="success">
+<Tooltip title="Click To see All Pig Products" sx={{cursor:'pointer'}}>
+    <Card sx={{ width: 125,height:50, cursor:'pointer' }} className="report" onClick={()=>PigProduct('Pig')}>
+      <CardContent>
+        <Typography variant="h6" component="div" sx={{textAlign:'center', whiteSpace:'nowrap', fontWeight:1000, fontSize:15, } }>
+        Pig 
+        </Typography>
+      </CardContent>
+    </Card>
+    </Tooltip>
+    </StyledBadge> 
+
+
+    <StyledBadge badgeContent={none} color="success">
+    <Tooltip title="Click To see All Poultry Products" sx={{cursor:'pointer'}}>
+    <Card sx={{ width: 175, height:50, cursor:'pointer'  }} className="report" onClick={()=>PoultryProduct('Poultry')}>
+      <CardContent>
+        <Typography variant="h6" component="div" sx={{textAlign:'center', whiteSpace:'nowrap', fontWeight:1000, fontSize:15} }>
+    Poultry 
+        </Typography>
+      </CardContent>
+    </Card>
+    </Tooltip>
+    </StyledBadge> 
+
+
+
+    <StyledBadge badgeContent={none} color="success">
+    <Tooltip title="Click To see All Egg Products" sx={{cursor:'pointer'}}>
+    <Card sx={{ width: 175, height:50, cursor:'pointer'}} className="report" onClick={()=>EggProduct('Egg')}>
+      <CardContent>
+        <Typography variant="h6" component="div" sx={{textAlign:'center', whiteSpace:'nowrap', fontWeight:1000, fontSize:15} }>
+        Egg  
+        </Typography>
+      </CardContent>
+    </Card>
+    </Tooltip>
+    </StyledBadge> 
+
+
+
+
+    <StyledBadge badgeContent={none} color="success">
+    <Tooltip title="Click To see All Cat Fish Products" sx={{cursor:'pointer'}}  onClick={()=>CatFishProduct('Cat-fish')}>
+    <Card sx={{ width: 176, height:50, cursor:'pointer'  }} className="report">
+      <CardContent>
+        <Typography variant="h6" component="div"  sx={{textAlign:'center', whiteSpace:'nowrap', fontWeight:1000, fontSize:15,} }>
+         Cat Fish  
+        </Typography>
+      </CardContent>
+    </Card>
+    </Tooltip>
+    </StyledBadge> 
+
+
+    <StyledBadge badgeContent={0} color="success">
+    <Tooltip title="Click To see All Cow Products" sx={{cursor:'pointer'}}  onClick={()=>CowProduct('Cow')}>
+     <Card sx={{ width: 175,height:50, cursor:'pointer' }} className="report">
+      <CardContent>
+        <Typography variant="h6" component="div" sx={{textAlign:'center', whiteSpace:'nowrap', fontWeight:1000, fontSize:15,} }>
+          Cow 
+        </Typography>
+      </CardContent>
+    </Card> 
+    </Tooltip>
+    </StyledBadge> 
+
+
+
+
+
+
+
+    
+
+    <StyledBadge badgeContent={0} color="success">
+    <Tooltip title="Click To see All Cucumber Products" sx={{cursor:'pointer'}}  onClick={()=>CucumberProduct('Cucumber')}>
+    <Card sx={{ width: 175, height:50, cursor:'pointer'  }} className="report">
+      <CardContent>
+        <Typography variant="h6" component="div"  sx={{textAlign:'center', whiteSpace:'nowrap', fontWeight:1000, fontSize:15,} }>
+      Cucumber 
+        </Typography>
+      </CardContent>
+    </Card>
+    </Tooltip>
+    </StyledBadge> 
+
+
+
+    <StyledBadge badgeContent={0} color="success">
+    <Tooltip title="Click To see All Manure Products" sx={{cursor:'pointer'}}  onClick={()=>ManureProduct('manure')}>
+    <Card sx={{ width: 175, height:50,  cursor:'pointer' }} className="report">
+      <CardContent>  
+        <Typography variant="h6" component="div"  sx={{textAlign:'center', whiteSpace:'nowrap', fontWeight:1000, fontSize:15,} }>
+      Manure 
+        </Typography>
+      </CardContent>
+    </Card>
+    </Tooltip>
+    </StyledBadge> 
+
+
+    <StyledBadge badgeContent={0} color="success"> 
+    <Tooltip title="Click To see All Plantain Products" sx={{cursor:'pointer'}}   onClick={()=>PlantainProduct('plantain')}>
+    <Card sx={{ width: 175, height:50, cursor:'pointer'   }} className="report">
+      <CardContent>   
+        <Typography variant="h6" component="div"  sx={{textAlign:'center', whiteSpace:'nowrap', fontWeight:1000, fontSize:15,} }>
+      Plantain  
+        </Typography>
+      </CardContent>
+    </Card >
+    </Tooltip>
+    </StyledBadge> 
+
+
+
+
+    <StyledBadge badgeContent={0} color="success"> 
+    <Tooltip title="Click To see All Feed Products" sx={{cursor:'pointer'}}   onClick={()=>FeedProduct('feed')}>
+    <Card sx={{ width: 175,height:50, cursor:'pointer'  }} className="report">
+      <CardContent>
+        <Typography variant="h6" component="div"  sx={{textAlign:'center', whiteSpace:'nowrap', fontWeight:1000, fontSize:15, } }>
+      Feed 
+        </Typography>
+      </CardContent>
+    </Card>
+    </Tooltip>
+    </StyledBadge> 
+
+
+
+
+      </Box><br/>
  
     
 
@@ -986,10 +1335,17 @@ InputProps={{
     <div className="box two">
       <div className="image-box">
 
-        {product?.category ==='Poultry' ?
+        {product?.category ==='Poultry' && product?.section==='Layers' ?
         <div className="image">
           <img src="https://thumbs.dreamstime.com/b/white-chicken-hen-isolated-d-illustration-white-chicken-hen-d-illustration-122513036.jpg?w=768" alt=""/>
         </div>:""}
+
+
+        {product?.category ==='Poultry' && product?.section==='Broilers' ?
+        <div className="image">
+          <img src="https://thumbs.dreamstime.com/b/full-body-brown-chicken-hen-standing-isolated-white-backgroun-background-use-farm-animals-livestock-theme-50156210.jpg?w=768" alt=""/>
+        </div>:""}
+
 
 
         {product?.category ==='Egg' ?
@@ -998,10 +1354,39 @@ InputProps={{
         </div>:""}
 
 
-        {product?.category ==='Pig' ?
-        <div className="image">
+        {product?.category ==='Pig' && product?.section ==='Piglets'  ?
+        <div className="image" style={{marginRight:'35px'}}>
+          <img src="https://thumbs.dreamstime.com/z/two-piglets-isolated-white-two-piglets-isolated-white-background-125596059.jpg?w=992" alt="" style={{width:'120%'}}/>
+        </div>:""}
+
+
+        {product?.category ==='Pig' && product?.section ==='Dry Sows'  ?
+        <div className="image" style={{marginRight:'35px'}}>
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHPZCMj6oXFjszxSXKb_XN_B0zD8_6Ll8_Dg&usqp=CAU" alt="" style={{width:'120%'}}/>
+        </div>:""}
+
+
+
+  {product?.category ==='Pig' && product?.section ==='Growers'  ?
+        <div className="image" >
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXU_82DbhkFCA6Kl4xVL8FAI5byjjhg96BZw&usqp=CAU" alt="" style={{height:'80%'}}/>
+        </div>:""}
+      
+
+        {product?.category ==='Pig' && product?.section ==='Boar'  ?
+        <div className="image" style={{marginRight:'10px'}}>
+          <img src="data:image/jpeg;base64,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" alt=""  style={{height:'80%'}}/>
+        </div>:""}
+
+
+        {product?.category ==='Pig' && product?.section ==='In-pigs' || product?.section ==='Weaners'  ?
+        <div className="image" style={{marginRight:'10px'}}>
           <img src="https://thumbs.dreamstime.com/b/pig-isolated-white-big-background-130393074.jpg?w=768" alt=""/>
         </div>:""}
+
+
+
+
 
 
         {product?.category ==='Cat-fish' ?

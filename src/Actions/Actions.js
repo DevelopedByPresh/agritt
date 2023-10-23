@@ -44,6 +44,7 @@ export const ClearCart = (data)=>({type:TYPES.CLEAR_CART, payload:data});
 export const Active = (data)=>({type:TYPES.ACTIVE, payload:data});
 
 
+
 // ALL CART ACTION END
 
 
@@ -161,13 +162,15 @@ export const CreateUsers = (data) => (dispatch) => {
 export const GetProducts = () => (dispatch) => {
  // dispatch(isLoading());
   const UserToken = sessionStorage.getItem('userToken');
+ const category = sessionStorage.getItem('category')
+
 
   const authorization = {
     "Content-Type": "application/json",
      Authorization: ` Bearer ${UserToken}`,
   };
 
-  axios.get(`http://localhost:5000/product/getAll/`,  { headers: authorization })
+  axios.get(`http://localhost:5000/product/getAll/?category=${category}`,  { headers: authorization })
     .then((response) => {
       dispatch(ProductsGotten(response?.data?.data));
     

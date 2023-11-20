@@ -14,7 +14,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 // import AdbIcon from '@mui/icons-material/Adb';
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 // import Grid from '@mui/material/Grid';
 // import Card from '@mui/material/Card';
 // import AddIcon from '@mui/icons-material/Add';
@@ -40,7 +40,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SearchIcon from "@mui/icons-material/Search";
 
 import { useSelector, useDispatch } from 'react-redux'
-import { ClearError, ClearMessage, GetUser, GetProducts, AddToCart, GetCart, DeleteCartItem, UpdateCart, FinishOrder,CreateOrder, GetOneProduct} from "../../Actions/Actions"
+import { ClearError, ClearMessage, GetUser, GetProducts, AddToCart, GetCart, DeleteCartItem, UpdateCart, FinishOrder,CreateOrder, GetOneProduct, LoggedOut} from "../../Actions/Actions"
 // import Select from '@mui/material/Select';
 
 import "./Products.css"
@@ -58,6 +58,8 @@ import Card from '@mui/material/Card';
 // import ListItemText from '@mui/material/ListItemText';
 // import InboxIcon from '@mui/icons-material/MoveToInbox';
 // import MailIcon from '@mui/icons-material/Mail'
+
+import { jwtDecode } from "jwt-decode"
 
 
 
@@ -80,14 +82,53 @@ const Products = ()=>{
 
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const token = sessionStorage.getItem('userToken')
 
   useEffect(()=>{
     document.body.style.zoom = "70%";
     dispatch(GetUser())
+    dispatch(ClearError())
     dispatch(GetProducts())
     dispatch(GetCart())
     dispatch(GetOneProduct())
   },[])
+
+
+
+
+  useEffect(() => {
+    let timerRef = null;
+  
+    const decoded = jwtDecode(token);
+  
+    const expiryTime = (new Date(decoded.exp * 1000)).getTime();
+    const currentTime = (new Date()).getTime();
+  
+    const timeout = expiryTime - currentTime;
+    const onExpire = () => {
+      dispatch(LoggedOut());
+       navigate('/');
+    };
+  
+    if (timeout > 0) {
+      // token not expired, set future timeout to log out and redirect
+      timerRef = setTimeout(onExpire, timeout);
+    } else {
+      // token expired, log out and redirect
+      onExpire();
+    }
+  
+    // Clear any running timers on component unmount or token state change
+    return () => {
+      clearTimeout(timerRef);
+    };
+  }, [dispatch, navigate, token]);
+
+
+
+
+
 
 
 const message = useSelector((state)=>state?.user?.message)
@@ -126,6 +167,7 @@ const [querry, setQuerry] = useState('')
  const [report, setReport] = useState('');
  sessionStorage.setItem('category', report)
  const category = sessionStorage.getItem('category')
+
 
 
  const none = 0
@@ -171,13 +213,14 @@ const [querry, setQuerry] = useState('')
 
 // }
 
-
+setTimeout(()=>{
+  sessionStorage.removeItem(category)
+},1000)
 
 
 
 
 const AllProduct = ()=>{
-
   sessionStorage.setItem('category', '')
   dispatch(GetProducts())
   setQtyError('')
@@ -197,6 +240,7 @@ const PoultryProduct = (Poultry)=>{
 
 
 const PigProduct = (Pig)=>{
+  setReport('Pig')
   sessionStorage.setItem('category', Pig)
   dispatch(GetProducts())
   setQtyError('')
@@ -205,25 +249,25 @@ const PigProduct = (Pig)=>{
 
 
 const EggProduct = (Egg)=>{
-
+  setReport('Egg')
   sessionStorage.setItem('category', Egg)
   dispatch(GetProducts())
-
-  dispatch(ClearError())
 
 }
 
 
 const CatFishProduct = (CatFish)=>{
+  setReport('CatFish')
   sessionStorage.setItem('category', CatFish)
   dispatch(GetProducts())
-
   setQtyError('')
 
 }
 
 
 const CowProduct = (Cow)=>{
+  setReport('Cow')
+
   sessionStorage.setItem('category', Cow)
   dispatch(GetProducts())
   setQtyError('')
@@ -235,6 +279,8 @@ const CowProduct = (Cow)=>{
 
 
 const CucumberProduct = (Cucumber)=>{
+  setReport('Cucumber')
+
   sessionStorage.setItem('category', Cucumber)
   dispatch(GetProducts())
   setQtyError('')
@@ -243,6 +289,8 @@ const CucumberProduct = (Cucumber)=>{
 
 
 const ManureProduct = (manure)=>{
+  setReport('manure')
+
   sessionStorage.setItem('category', manure)
   dispatch(GetProducts())
   setQtyError('')
@@ -251,6 +299,8 @@ const ManureProduct = (manure)=>{
 
 
 const PlantainProduct = (plantain)=>{
+  setReport('Plantain')
+ 
   sessionStorage.setItem('category', plantain)
   dispatch(GetProducts())
   setQtyError('')
@@ -259,6 +309,8 @@ const PlantainProduct = (plantain)=>{
 
 
 const FeedProduct = (feed)=>{
+  setReport('feed')
+
   sessionStorage.setItem('category', feed)
   dispatch(GetProducts())
   setQtyError('')
@@ -526,6 +578,7 @@ const list = (anchor) => (
   >
       <CloseIcon sx={{marginTop:5, marginLeft:5, cursor:'pointer', fontSize:'50'}} onClick={toggleDrawer(anchor, false)}/>
       <br/>
+
 
 
       {cartQtyError &&
@@ -1246,11 +1299,33 @@ InputProps={{
 
 
       </Box><br/>
+
+
+      {error  ?  
+<div className="alert alert-danger danger alert-dismissible" role="alert" style={{width:'20%', margin:'0px auto'}}>
+<div className="containerss"  style={{textAlign:'center',  margin:'0px auto', whiteSpace:'no-wrap'}}>
+<strong>  <i className="fa fa-exclamation-circle" aria-hidden="true"></i></strong>  {error} on {report}!
+</div>
+</div> : "" 
+ }
+
  
     
 
-{AllProducts?.length === 0 ?
-    <Typography textAlign="center">No Product Available !</Typography> : ""}
+{AllProducts?.length === 0   ?
+    <Typography textAlign="center">No Product Available !</Typography> :  ""  }
+
+
+
+{/* { report === 'Cow' || report ==='Cucumber' || report ==='manure' || report ==='plantain' || report ==='feed'?
+    <Typography textAlign="center">No Product Available on {report} !</Typography> : ""} */}
+
+
+
+
+
+
+
 
 
 {loading && error === false ?
@@ -1277,6 +1352,7 @@ InputProps={{
 }
 <br/>
 
+{error ==='Products Not Found' ? "" :
 
         <Box  className="main-contents">
     {AllProducts &&AllProducts?.filter((product) => product?.category?.toLowerCase()?.includes(querry))?.map((product) => (
@@ -1408,7 +1484,7 @@ InputProps={{
 
 ))}
 
-  </Box>
+  </Box> }
   </div>
     )
 

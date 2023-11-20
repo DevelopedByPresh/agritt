@@ -4,12 +4,49 @@ import  "./profile.css"
 import {useDispatch, useSelector} from 'react-redux'
 import {LoggedOut, UpdateProfile, ClearError, ClearMessage } from '../../Actions/Actions'
 import {useNavigate} from "react-router-dom"
+import { jwtDecode } from "jwt-decode"
 
 
 
 const UserProfile = ()=>{
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  const token = sessionStorage.getItem('userToken')
+
+
+
+
+  useEffect(() => {
+    let timerRef = null;
+  
+    const decoded = jwtDecode(token);
+  
+    const expiryTime = (new Date(decoded.exp * 1000)).getTime();
+    const currentTime = (new Date()).getTime();
+  
+    const timeout = expiryTime - currentTime;
+    const onExpire = () => {
+      dispatch(LoggedOut());
+       navigate('/');
+    };
+  
+    if (timeout > 0) {
+      // token not expired, set future timeout to log out and redirect
+      timerRef = setTimeout(onExpire, timeout);
+    } else {
+      // token expired, log out and redirect
+      onExpire();
+    }
+  
+    // Clear any running timers on component unmount or token state change
+    return () => {
+      clearTimeout(timerRef);
+    };
+  }, [dispatch, navigate, token]);
+
+
+
 
   const UserInfo = JSON.parse(sessionStorage.getItem('UpdateUser'))
 

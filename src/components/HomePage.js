@@ -44,8 +44,9 @@ import { styled } from '@mui/material/styles';
 import OrderHistory from './orderHistory';
 
 import { useSelector, useDispatch } from 'react-redux'
-import {AddProducts, ClearError, ClearMessage, GetUser, GetProducts, GetOrder} from "../Actions/Actions"
+import {AddProducts, ClearError, ClearMessage, GetUser, GetProducts, GetOrder, LoggedOut} from "../Actions/Actions"
 import Select from '@mui/material/Select';
+import { jwtDecode } from "jwt-decode"
 
 
 
@@ -62,6 +63,10 @@ import Select from '@mui/material/Select';
  const HomePage=()=> {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate();
+    const token = sessionStorage.getItem('userToken')
+
+
     useEffect(()=>{
       document.body.style.zoom = "70%";
       dispatch(GetUser())
@@ -69,6 +74,41 @@ import Select from '@mui/material/Select';
       dispatch(GetOrder())
       dispatch(ClearError())
     },[])
+
+
+
+
+
+
+
+    
+      useEffect(() => {
+        let timerRef = null;
+      
+        const decoded = jwtDecode(token);
+      
+        const expiryTime = (new Date(decoded.exp * 1000)).getTime();
+        const currentTime = (new Date()).getTime();
+      
+        const timeout = expiryTime - currentTime;
+        const onExpire = () => {
+          dispatch(LoggedOut());
+           navigate('/');
+        };
+      
+        if (timeout > 0) {
+          // token not expired, set future timeout to log out and redirect
+          timerRef = setTimeout(onExpire, timeout);
+        } else {
+          // token expired, log out and redirect
+          onExpire();
+        }
+      
+        // Clear any running timers on component unmount or token state change
+        return () => {
+          clearTimeout(timerRef);
+        };
+      }, [dispatch, navigate, token]);
     
 
   
@@ -210,6 +250,9 @@ const handleFocus = () => {
   
   const HandleOpenProduct = () => {
     setProductDialog(true);
+    if(error){
+      dispatch(ClearError())
+    }
   };
 
 
@@ -276,7 +319,7 @@ const handleFocus = () => {
           <Typography
             variant="h6"
             noWrap
-            component="a"
+           // component="a"
       
             sx={{
               mr: 2,

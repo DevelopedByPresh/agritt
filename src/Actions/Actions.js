@@ -84,10 +84,12 @@ export const CreateUsers = (data) => (dispatch) => {
     axios.post(`http://localhost:5000/user/register`, data,)
       .then((response) => {
         dispatch(UserCreated(response?.data?.message));
+     
  
       })
       .catch((error) => {
-        dispatch(Error(error?.response?.data?.error))
+        dispatch(Error(error?.response?.data?.message))
+     
         
       });
   };
@@ -99,12 +101,13 @@ export const CreateUsers = (data) => (dispatch) => {
       .then((response) => {
         dispatch(LoggedIn(response?.data?.message));
         sessionStorage.setItem('user', JSON.stringify(response?.data?.data))
-        sessionStorage.setItem('userToken', response?.data?.token)
+        sessionStorage.setItem('userToken', response?.data?.data?.accessToken)
+
      
   
       })
       .catch((error) => {
-        dispatch(Error(error?.response?.data?.error))
+        dispatch(Error(error?.response?.data?.message))
         
       });
   };
@@ -139,7 +142,7 @@ export const CreateUsers = (data) => (dispatch) => {
 
       })
       .catch((error) => {
-        dispatch(Error(error?.response?.data?.error))
+        dispatch(Error(error?.response?.data?.message))
         
       });
   };
@@ -177,7 +180,8 @@ export const GetProducts = () => (dispatch) => {
 
     })
     .catch((error) => {
-      dispatch(Error(error?.response?.data?.error))
+      dispatch(Error(error?.response?.data?.message))
+  
 
 
       
@@ -334,6 +338,7 @@ export const AddToCart = (data) => (dispatch) => {
   axios.post(`http://localhost:5000/cart/add`, data, { headers: authorization })
     .then((response) => {
       dispatch(ItemAdded(response?.data?.message));
+      
 
       dispatch(GetCart());
      // dispatch(GetOneProduct());
@@ -343,6 +348,7 @@ export const AddToCart = (data) => (dispatch) => {
     })
     .catch((error) => {
       dispatch(Error(error?.response?.data?.error))
+  
 
 
       

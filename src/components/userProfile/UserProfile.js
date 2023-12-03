@@ -19,6 +19,10 @@ const UserProfile = ()=>{
 
   useEffect(() => {
     let timerRef = null;
+
+    if(token){
+
+
   
     const decoded = jwtDecode(token);
   
@@ -28,6 +32,8 @@ const UserProfile = ()=>{
     const timeout = expiryTime - currentTime;
     const onExpire = () => {
       dispatch(LoggedOut());
+      sessionStorage.clear() 
+
        navigate('/');
     };
   
@@ -43,6 +49,12 @@ const UserProfile = ()=>{
     return () => {
       clearTimeout(timerRef);
     };
+
+  }
+
+
+
+
   }, [dispatch, navigate, token]);
 
 
@@ -62,8 +74,6 @@ const UserProfile = ()=>{
     lastName:"",
     email:"",
     date_of_birth:"",
-    
-
 
   })
 
@@ -75,6 +85,7 @@ const UserProfile = ()=>{
       setUser(UserInfo)
     }
   },[])
+
 
 
 
@@ -202,7 +213,7 @@ setTimeout(()=>{
       <div className="container-fluid d-flex align-items-center">
         <div className="row">
           <div className="col-lg-7 col-md-10">
-            <h1 className="display-2 text-white text-uppercase"> {UserInfo?.lastName} {UserInfo?.firstName} </h1>
+            <h1 className="display-2 text-white text-capitalize"> {UserInfo?.lastName} {UserInfo?.firstName} </h1>
             <p className="text-white mt-0 mb-5">This is your profile page. You can see the progress you have made with your work and manage your Account</p>
             
             <a href="#!" className="btn btn-dark"  onClick={LogoutUser}>Logout</a>

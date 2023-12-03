@@ -77,6 +77,7 @@ const handleSubmit = (e) => {
   e.preventDefault();
   const email = Email
   const User = {email, password}
+  dispatch(ClearError());
   if(Email){
     dispatch(LoginUser(User))
   }else{
@@ -174,7 +175,7 @@ const handleCloseUserMenu = () => {
     <Typography
       variant="h6"
       noWrap
-      component="a"
+     // component="a"
    
       sx={{
         mr: 2,
@@ -182,6 +183,7 @@ const handleCloseUserMenu = () => {
         fontFamily: 'sans-serif',
         fontWeight: 700,
         letterSpacing: '.2rem',
+        color:'white',
   
         textDecoration: 'none',
   
@@ -272,7 +274,7 @@ const handleCloseUserMenu = () => {
     <div className="row d-flex justify-content-center">
       <div className="col-lg-8">
        <Typography variant="h5" component="div" sx={{textAlign:'center', color:'white',  fontWeight:50}} >
-       Welcome Back  
+         Hi there,  Welcome Back! 
        </Typography>
         <h2 className="fw-bold mb-5" style={{color:'white'}}>Login</h2>
  

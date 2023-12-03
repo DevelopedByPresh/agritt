@@ -18,7 +18,11 @@ const initialState = {
     active:true,
     order:[],
     OneProduct:[],
-    qty:1
+    qty:1,
+    EggRecord:[],
+    PigRecord:[],
+    FishRecord:[],
+    PoultryRecord:[],
 }
 
 
@@ -215,7 +219,7 @@ const UserReducer = (state=initialState, action) =>{
                                     ...state,
                                     error: false,
                                     loading: false,
-                                    orderMsg:action.payload,
+                                   // orderMsg:action.payload,
                                     cartItems:[]
                                     
                                   
@@ -269,7 +273,8 @@ const UserReducer = (state=initialState, action) =>{
                             ...state,
                             error: false,
                             loading: false,
-                           message:action.payload
+                            orderMsg:action.payload,
+                           // cartItems:[]
                           };
 
 
@@ -287,6 +292,241 @@ const UserReducer = (state=initialState, action) =>{
 
 
                         // All Order Reducer End
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        
+                                    // EVERYTHING THAT HAS TO DO WITH EGG RECORD START
+
+
+                                    case TYPES.CREATE_EGG_RECORD:
+                                      return{
+                                        ...state,
+                                        loading:false,
+                                        error:false,
+                                        message:action.payload
+                                      }
+
+
+
+                                      case TYPES.GET_EGG_RECORD:
+                                        return{
+                                          ...state,
+                                          loading:false,
+                                          error:false,
+                                          EggRecord:action.payload
+                                        }
+
+
+
+                                          
+                                        case TYPES.UPDATE_EGG_RECORD:
+                                          return {
+                                            ...state,
+                                            error: false,
+                                            loading: false,
+                                            message:action.payload
+                                           
+                                          };
+        
+                                          
+                                          case TYPES.DELETE_EGG_RECORD:
+                                            return {
+                                              ...state,
+                                              error: false,
+                                              loading: false,
+                                              message:action.payload
+                                             
+                                            };
+
+
+                                                  
+                                          case TYPES.GET_EGG_STATISTICS:
+                                            return {
+                                              ...state,
+                                              error: false,
+                                              loading: false,
+                                              EggStat:action.payload
+                                             
+                                            };
+
+
+
+                                    // EVERYTHING THAT HAS TO DO WITH EGG RECORD END
+
+
+
+
+
+
+
+                                     // EVERYTHING THAT HAS TO DO WITH Pig RECORD START
+
+
+                                     case TYPES.CREATE_PIG_RECORD:
+                                      return{
+                                        ...state,
+                                        loading:false,
+                                        error:false,
+                                        message:action.payload
+                                      }
+
+
+
+                                      case TYPES.GET_PIG_RECORD:
+                                        return{
+                                          ...state,
+                                          loading:false,
+                                          error:false,
+                                          PigRecord:action.payload
+                                        }
+
+
+
+                                          
+                                        case TYPES.UPDATE_PIG_RECORD:
+                                          return {
+                                            ...state,
+                                            error: false,
+                                            loading: false,
+                                            message:action.payload
+                                           
+                                          };
+        
+                                          
+                                          case TYPES.DELETE_PIG_RECORD:
+                                            return {
+                                              ...state,
+                                              error: false,
+                                              loading: false,
+                                              message:action.payload
+                                             
+                                            };
+
+
+                                  
+  
+  
+                                    // EVERYTHING THAT HAS TO DO WITH Pig RECORD END
+
+
+
+
+
+                                     // EVERYTHING THAT HAS TO DO WITH Poultry RECORD START
+
+
+                                     case TYPES.CREATE_POULTRY_RECORD:
+                                      return{
+                                        ...state,
+                                        loading:false,
+                                        error:false,
+                                        message:action.payload
+                                      }
+
+
+
+                                      case TYPES.GET_POULTRY_RECORD:
+                                        return{
+                                          ...state,
+                                          loading:false,
+                                          error:false,
+                                          PoultryRecord:action.payload
+                                        }
+
+
+
+                                          
+                                        case TYPES.UPDATE_POULTRY_RECORD:
+                                          return {
+                                            ...state,
+                                            error: false,
+                                            loading: false,
+                                            message:action.payload
+                                           
+                                          };
+        
+                                          
+                                          case TYPES.DELETE_POULTRY_RECORD:
+                                            return {
+                                              ...state,
+                                              error: false,
+                                              loading: false,
+                                              message:action.payload
+                                             
+                                            };
+  
+                                    // EVERYTHING THAT HAS TO DO WITH Poultry RECORD END
+
+
+
+
+
+                                    
+                                     // EVERYTHING THAT HAS TO DO WITH FISH RECORD START
+
+
+                                     case TYPES.CREATE_FISH_RECORD:
+                                      return{
+                                        ...state,
+                                        loading:false,
+                                        error:false,
+                                        message:action.payload
+                                      }
+
+
+
+                                      case TYPES.GET_FISH_RECORD:
+                                        return{
+                                          ...state,
+                                          loading:false,
+                                          error:false,
+                                          FishRecord:action.payload
+                                        }
+
+
+
+                                          
+                                        case TYPES.UPDATE_FISH_RECORD:
+                                          return {
+                                            ...state,
+                                            error: false,
+                                            loading: false,
+                                            message:action.payload
+                                           
+                                          };
+        
+                                          
+                                          case TYPES.DELETE_FISH_RECORD:
+                                            return {
+                                              ...state,
+                                              error: false,
+                                              loading: false,
+                                              message:action.payload
+                                             
+                                            };
+
+
+                                                  
+  
+  
+                                    // EVERYTHING THAT HAS TO DO WITH Fiah RECORD END
+
 
 
 

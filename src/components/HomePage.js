@@ -25,7 +25,7 @@ import CardContent from '@mui/material/CardContent';
 import Badge from '@mui/material/Badge';
 import ApprovalIcon from '@mui/icons-material/Approval';
 import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
+// import Autocomplete from '@mui/material/Autocomplete';
 import InputLabel from '@mui/material/InputLabel';
 import Dialog from '@mui/material/Dialog';
 import CloseIcon from '@mui/icons-material/Close';
@@ -36,7 +36,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 
-import { styled } from '@mui/material/styles';
+// import { styled } from '@mui/material/styles';
 
 
 // import SearchIcon from "@mui/icons-material/Search";
@@ -65,6 +65,7 @@ import { jwtDecode } from "jwt-decode"
     const dispatch = useDispatch()
     const navigate = useNavigate();
     const token = sessionStorage.getItem('userToken')
+   
 
 
     useEffect(()=>{
@@ -84,6 +85,10 @@ import { jwtDecode } from "jwt-decode"
     
       useEffect(() => {
         let timerRef = null;
+
+        if(token){
+
+   
       
         const decoded = jwtDecode(token);
       
@@ -93,6 +98,8 @@ import { jwtDecode } from "jwt-decode"
         const timeout = expiryTime - currentTime;
         const onExpire = () => {
           dispatch(LoggedOut());
+          sessionStorage.clear() 
+
            navigate('/');
         };
       
@@ -108,6 +115,12 @@ import { jwtDecode } from "jwt-decode"
         return () => {
           clearTimeout(timerRef);
         };
+
+      }
+
+
+
+
       }, [dispatch, navigate, token]);
     
 
@@ -118,6 +131,7 @@ import { jwtDecode } from "jwt-decode"
   const error = useSelector((state)=>state?.user?.error)
   const loading = useSelector((state)=>state?.user?.loading)
   const orders = useSelector((state)=>state?.user?.order)
+ 
 
 
 const pages = ['About Us', 'Contact Us'];
@@ -375,7 +389,7 @@ const handleFocus = () => {
           <Typography
             variant="h5"
             noWrap
-            component="a"
+           // component="a"
             href="#"
             sx={{
               mr: 2,
@@ -454,12 +468,30 @@ cards on Homepage  for order History, create Order and Add Products Start */}
 
      <Box sx={{ display: 'flex', justifyContent: 'center',p: 1, m: 1, mt:15, borderRadius: 1,cursor:'pointer' }}>
 
+
+ 
+     <Link to="/record">
+     <Card sx={{ minWidth: 275, mr:15 }}>
+      <CardContent>
+        <Typography variant="h5" component="div" onClick={handleClickOpen}>
+        Enter Product Record   <Fab  aria-label="add" sx={{ml:5, backgroundColor:'#006400', color:'white'}}><AddIcon /></Fab>
+        </Typography>
+      </CardContent>
+    </Card> 
+    </Link>
+
+
+
+
+
+
+
     <Badge badgeContent={orders?.length} color="success"  sx={{mr:13,  }}>
     <Card sx={{ minWidth: 275 }}>
       <CardContent>
       <Tooltip title="Click To See All Order Entries" sx={{cursor:'pointer'}}>
       <Typography variant="h5" component="div" onClick={handleClickOpen1}>
-      Order Entries   <Fab  aria-label="add" sx={{ml:5, backgroundColor:'#006400', color:'white'}}><ApprovalIcon /></Fab>
+     My Order Entries   <Fab  aria-label="add" sx={{ml:5, backgroundColor:'#006400', color:'white'}}><ApprovalIcon /></Fab>
       </Typography>
       </Tooltip>
       </CardContent>

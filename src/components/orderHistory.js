@@ -16,7 +16,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+// import DialogTitle from '@mui/material/DialogTitle';
 import MUIDataTable from "mui-datatables";
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -46,9 +46,12 @@ import { LoggedOut} from "../Actions/Actions"
 
 
 
-
   useEffect(() => {
     let timerRef = null;
+
+    if(token){
+
+
   
     const decoded = jwtDecode(token);
   
@@ -58,6 +61,8 @@ import { LoggedOut} from "../Actions/Actions"
     const timeout = expiryTime - currentTime;
     const onExpire = () => {
       dispatch(LoggedOut());
+      sessionStorage.clear() 
+
        navigate('/');
     };
   
@@ -73,6 +78,12 @@ import { LoggedOut} from "../Actions/Actions"
     return () => {
       clearTimeout(timerRef);
     };
+
+  }
+
+
+
+
   }, [dispatch, navigate, token]);
   
 

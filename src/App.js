@@ -15,6 +15,8 @@ import PrivateRoute from "./components/privateRoute";
 const  HomePage = lazy(()=> import("./components/HomePage"))
 const  UserProfile = lazy(()=> import("./components/userProfile/UserProfile"))
 const  Products = lazy(()=> import("./components/Products/Products"))
+const  NotFound = lazy(()=> import("./components/NotFound/NotFound"))
+const  Record = lazy(()=> import("./components/Record/Record"))
 
 
 function App() {
@@ -31,10 +33,12 @@ function App() {
                 <Route element={<HomePage/>} path="/Home" exact/>
                 <Route element={<UserProfile/>} path="/userProfile"/>
                 <Route element={<Products/>} path="/products"/>
+                <Route element={<Record/>} path="/record"/>
             </Route>
             <Route element={<Login/>} path="/"/>
             <Route exact path='/SignUp' element={<SignIn/>}/>
             <Route path="/ForgotPassword" element={<ForgotPassword/>}/>
+            <Route path="*" element={<NotFound/>}/>
           </Routes>
           </Suspense>
       </Router>

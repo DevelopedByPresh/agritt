@@ -59,6 +59,46 @@ export const OrderCreated=(data)=>({type:TYPES.CREATE_ORDER, payload:data})
 
 
 
+// EVERYTHING THAT HAS TO DO WITH EGG RECORD START
+export const EggRecord = (data)=>({type:TYPES.CREATE_EGG_RECORD, payload:data});
+export const EggRecordGotten = (data)=>({type:TYPES.GET_EGG_RECORD, payload:data});
+
+
+// EVERYTHING THAT HAS TO DO WITH EGG RECORD END
+
+
+
+
+// EVERYTHING THAT HAS TO DO WITH EGG RECORD START
+export const PigRecord = (data)=>({type:TYPES.CREATE_PIG_RECORD, payload:data});
+export const PigRecordGotten = (data)=>({type:TYPES.GET_PIG_RECORD, payload:data});
+
+// EVERYTHING THAT HAS TO DO WITH EGG RECORD END
+
+
+
+
+// EVERYTHING THAT HAS TO DO WITH POULTRY RECORD START
+export const PoultryRecord = (data)=>({type:TYPES.CREATE_POULTRY_RECORD, payload:data});
+export const PoultryRecordGotten = (data)=>({type:TYPES.GET_POULTRY_RECORD, payload:data});
+
+// EVERYTHING THAT HAS TO DO WITH POULTRY RECORD END
+
+
+
+
+
+// EVERYTHING THAT HAS TO DO WITH FISH RECORD START
+export const FishRecord = (data)=>({type:TYPES.CREATE_FISH_RECORD, payload:data});
+export const FishRecordGotten = (data)=>({type:TYPES.GET_FISH_RECORD, payload:data});
+
+// EVERYTHING THAT HAS TO DO WITH FISH RECORD END
+
+
+
+
+
+
 // LOADING, MESSAGES, CLEAR MESSAGE AND ERROR START
 
 export const isLoading = () => ({ type: TYPES.LOADING });
@@ -210,7 +250,7 @@ export const GetOneProduct = () => (dispatch) => {
 
     })
     .catch((error) => {
-      dispatch(Error(error?.response?.data?.error))
+      dispatch(Error(error?.response?.data?.message))
 
 
       
@@ -333,11 +373,12 @@ export const AddToCart = (data) => (dispatch) => {
      Authorization: `Bearer ${UserToken}`,
   };
 
- // dispatch(isLoading());
+  dispatch(isLoading());
 
   axios.post(`http://localhost:5000/cart/add`, data, { headers: authorization })
     .then((response) => {
       dispatch(ItemAdded(response?.data?.message));
+
       
 
       dispatch(GetCart());
@@ -347,7 +388,7 @@ export const AddToCart = (data) => (dispatch) => {
       
     })
     .catch((error) => {
-      dispatch(Error(error?.response?.data?.error))
+      dispatch(Error(error?.response?.data?.message))
   
 
 
@@ -373,6 +414,7 @@ export const GetCart = () => (dispatch) => {
    axios.get(`http://localhost:5000/cart/${userId}?active=true`,  { headers: authorization })
      .then((response) => {
        dispatch(CartGotten(response?.data?.data?.cartItems));
+    
   
  
      })
@@ -385,22 +427,17 @@ export const GetCart = () => (dispatch) => {
 
 
 
- 
- 
-
-
-
-
-
-
 
 
 export const DeleteCartItem = () => (dispatch) => {
  // dispatch(isLoading());
   const UserToken = sessionStorage.getItem('userToken');
   const user = JSON.parse(sessionStorage.getItem('user'))
+
   const id = sessionStorage.getItem("cartID")
-  const productId = sessionStorage.getItem('deleteCartItemId')
+
+ const productId = sessionStorage.getItem('deleteCartItemId')
+
 
 
   const authorization = {
@@ -408,18 +445,25 @@ export const DeleteCartItem = () => (dispatch) => {
      Authorization: `Bearer ${UserToken}`,
   };
 
-  axios.delete(`http://localhost:5000/cart/remove/:?cartId=${id}&productId=${productId}`,  { headers: authorization })
+  axios.delete(`http://localhost:5000/cart/remove/${id}?productId=${productId}`,  { headers: authorization })
     .then((response) => {
       dispatch(CartItemDeleted(response?.data?.message));
+ 
      
       dispatch(GetCart());
     })
     .catch((error) => {
       dispatch(Error(error?.response?.data?.error))
+   
 
       
     });
 };
+
+
+
+
+
 
 
 
@@ -431,12 +475,13 @@ export const UpdateCart = (data) => (dispatch) => {
   const UserToken = sessionStorage.getItem('userToken');
   const id = sessionStorage.getItem("cartID")
 
+
   const authorization = {
     "Content-Type": "application/json",
      Authorization: `Bearer ${UserToken}`,
   };
 
-  axios.patch(`http://localhost:5000/cart/update/${id}`, data, { headers: authorization })
+  axios.patch(`http://localhost:5000/cart/updateItem/${id}`, data, { headers: authorization })
     .then((response) => {
       dispatch(CartUpdated(response?.data?.message));
 
@@ -444,10 +489,18 @@ export const UpdateCart = (data) => (dispatch) => {
     })
     .catch((error) => {
       dispatch(Error(error?.response?.data?.error))
+   
 
       
     });
 };
+
+
+
+
+
+
+
 
 
 
@@ -456,12 +509,13 @@ export const FinishOrder = (data) => (dispatch) => {
   const UserToken = sessionStorage.getItem('userToken');
   const id = sessionStorage.getItem("cartID")
 
+
   const authorization = {
     "Content-Type": "application/json",
      Authorization: `Bearer ${UserToken}`,
   };
 
-  axios.post(`http://localhost:5000/cart/active/${id}`, data, { headers: authorization })
+  axios.patch(`http://localhost:5000/cart/${id}`, data, { headers: authorization })
     .then((response) => {
       dispatch(OrderSubmitted(response?.data?.message));
       dispatch(GetCart());
@@ -473,7 +527,8 @@ export const FinishOrder = (data) => (dispatch) => {
   
     })
     .catch((error) => {
-      dispatch(Error(error?.response?.data?.error))
+      dispatch(Error(error?.response?.data?.message))
+
      
 
       
@@ -492,11 +547,10 @@ export const FinishOrder = (data) => (dispatch) => {
 
 
 export const CreateOrder = (data) => (dispatch) => {
-  // dispatch(isLoading());
+   dispatch(isLoading());
    const UserToken = sessionStorage.getItem('userToken');
 
-   const user = JSON.parse(sessionStorage.getItem('user'))
-   const id = user?.id
+
  
 
    const authorization = {
@@ -506,8 +560,9 @@ export const CreateOrder = (data) => (dispatch) => {
  
    axios.post(`http://localhost:5000/order/add`, data, { headers: authorization })
      .then((response) => {
-       dispatch(OrderCreated(response?.data?.data?.message));
+       dispatch(OrderCreated(response?.data?.message));
        dispatch(GetProducts());
+      
    
  
      })
@@ -537,11 +592,13 @@ export const GetOrder = () => (dispatch) => {
    axios.get(`http://localhost:5000/order/user/?id=${id}`,  { headers: authorization })
      .then((response) => {
        dispatch(OrderGotten(response?.data?.data));
+     
   
  
      })
      .catch((error) => {
-      // dispatch(Error(error?.response?.data?.error))
+       dispatch(Error(error?.response?.data?.error))
+
       
  
        
@@ -558,3 +615,393 @@ export const GetOrder = () => (dispatch) => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  // EVERYTHING THAT HAS TO DO WITH PIG RECORD START
+
+
+
+  export const CreatePigRecord = (data) => (dispatch) => {
+    dispatch(isLoading());
+    const UserToken = sessionStorage.getItem('userToken');
+
+   const authorization = {
+     "Content-Type": "application/json",
+      Authorization: ` Bearer ${UserToken}`,
+   }
+
+  
+    axios.post(`http://localhost:5000/pig/`, data, { headers: authorization })
+      .then((response) => {
+        dispatch(PigRecord(response?.data?.message));
+        dispatch(GetPigRecord());
+   
+   
+   
+    
+  
+      })
+      .catch((error) => {
+        dispatch(Error(error?.response?.data?.message))
+    
+   
+ 
+  
+        
+      });
+  };
+ 
+
+
+
+
+  export const GetPigRecord = () => (dispatch) => {
+  // dispatch(isLoading());
+  const UserToken = sessionStorage.getItem('userToken');
+
+
+  const authorization = {
+    "Content-Type": "application/json",
+     Authorization: ` Bearer ${UserToken}`,
+  }
+
+ 
+   axios.get(`http://localhost:5000/pig`,  { headers: authorization })
+     .then((response) => {
+       dispatch(PigRecordGotten(response?.data?.data));
+     
+    
+  
+   
+ 
+     })
+     .catch((error) => {
+       dispatch(Error(error?.response?.data?.error))
+     
+
+ 
+       
+     });
+ };
+
+
+
+  // EVERYTHING THAT HAS TO DO WITH PIG RECORD END
+
+
+
+
+  
+  // EVERYTHING THAT HAS TO DO WITH POULTRY RECORD START
+
+
+
+  export const CreatePoultryRecord = (data) => (dispatch) => {
+    dispatch(isLoading());
+    const UserToken = sessionStorage.getItem('userToken');
+
+   const authorization = {
+     "Content-Type": "application/json",
+      Authorization: ` Bearer ${UserToken}`,
+   }
+
+  
+    axios.post(`http://localhost:5000/poultry/`, data, { headers: authorization })
+      .then((response) => {
+        dispatch(PoultryRecord(response?.data?.message));
+        dispatch(GetPoultryRecord());
+   
+   
+   
+    
+  
+      })
+      .catch((error) => {
+        dispatch(Error(error?.response?.data?.message))
+    
+   
+ 
+  
+        
+      });
+  };
+ 
+
+
+
+
+  export const GetPoultryRecord = () => (dispatch) => {
+  // dispatch(isLoading());
+  const UserToken = sessionStorage.getItem('userToken');
+
+
+  const authorization = {
+    "Content-Type": "application/json",
+     Authorization: ` Bearer ${UserToken}`,
+  }
+
+ 
+   axios.get(`http://localhost:5000/poultry`,  { headers: authorization })
+     .then((response) => {
+       dispatch(PoultryRecordGotten(response?.data?.data));
+     
+    
+  
+   
+ 
+     })
+     .catch((error) => {
+       dispatch(Error(error?.response?.data?.error))
+     
+
+ 
+       
+     });
+ };
+
+
+
+
+
+
+
+
+
+
+
+
+  // EVERYTHING THAT HAS TO DO WITH POULTRY RECORD END
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  // EVERYTHING THAT HAS TO DO WITH fish RECORD START
+
+
+
+  export const CreateFishRecord = (data) => (dispatch) => {
+    dispatch(isLoading());
+    const UserToken = sessionStorage.getItem('userToken');
+
+   const authorization = {
+     "Content-Type": "application/json",
+      Authorization: ` Bearer ${UserToken}`,
+   }
+
+  
+    axios.post(`http://localhost:5000/fish/`, data, { headers: authorization })
+      .then((response) => {
+        dispatch(FishRecord(response?.data?.message));
+        dispatch(GetFishRecord());
+   
+   
+   
+    
+  
+      })
+      .catch((error) => {
+        dispatch(Error(error?.response?.data?.message))
+    
+   
+ 
+  
+        
+      });
+  };
+ 
+
+
+
+
+  export const GetFishRecord = () => (dispatch) => {
+  // dispatch(isLoading());
+  const UserToken = sessionStorage.getItem('userToken');
+
+
+  const authorization = {
+    "Content-Type": "application/json",
+     Authorization: ` Bearer ${UserToken}`,
+  }
+
+ 
+   axios.get(`http://localhost:5000/fish`,  { headers: authorization })
+     .then((response) => {
+       dispatch(FishRecordGotten(response?.data?.data));
+     
+    
+  
+   
+ 
+     })
+     .catch((error) => {
+       dispatch(Error(error?.response?.data?.error))
+     
+
+ 
+       
+     });
+ };
+
+
+
+
+
+
+
+
+
+  // EVERYTHING THAT HAS TO DO WITH Fish RECORD END
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  // EVERYTHING THAT HAS TO DO WITH EGG RECORD START
+
+
+
+  export const CreateEggRecord = (data) => (dispatch) => {
+    dispatch(isLoading());
+    const UserToken = sessionStorage.getItem('userToken');
+
+   const authorization = {
+     "Content-Type": "application/json",
+      Authorization: ` Bearer ${UserToken}`,
+   }
+
+  
+    axios.post(`http://localhost:5000/egg/`, data, { headers: authorization })
+      .then((response) => {
+        dispatch(EggRecord(response?.data?.message));
+        dispatch(GetEggRecord());
+   
+   
+   
+    
+  
+      })
+      .catch((error) => {
+        dispatch(Error(error?.response?.data?.message))
+    
+    
+   
+ 
+  
+        
+      });
+  };
+ 
+
+
+
+
+  export const GetEggRecord = () => (dispatch) => {
+  // dispatch(isLoading());
+  const UserToken = sessionStorage.getItem('userToken');
+
+
+  const authorization = {
+    "Content-Type": "application/json",
+     Authorization: ` Bearer ${UserToken}`,
+  }
+
+ 
+   axios.get(`http://localhost:5000/egg`,  { headers: authorization })
+     .then((response) => {
+       dispatch(EggRecordGotten(response?.data?.data));
+     
+    
+  
+   
+ 
+     })
+     .catch((error) => {
+       dispatch(Error(error?.response?.data?.error))
+     
+
+ 
+       
+     });
+ };
+
+
+
+
+
+
+
+
+
+
+
+
+      
+
+
+
+
+
+
+
+
+
+
+  // EVERYTHING THAT HAS TO DO WITH EGG RECORD end

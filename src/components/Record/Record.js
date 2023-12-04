@@ -1331,7 +1331,7 @@ const columns = [
                   id="demo-multiple-name"
                   value={selectedProduct || ""}
                   fullWidth
-              // onFocus={handleFocus}
+               onFocus={handleFocus}
                   input={<OutlinedInput label="Select Product To Enter Record..." />}
                   onChange={(e) => setSelectedProduct(e.target.value)}>
                   {ProductData.product.map((value, key) => (
@@ -1367,7 +1367,7 @@ const columns = [
 }
 
 {error &&
-<div className="alert alert-danger danger alert-dismissible" role="alert" style={{width:'40%', margin:'0px auto'}}>
+<div className="alert alert-danger danger alert-dismissible" role="alert" style={{width:'30%', margin:'0px auto'}}>
 <div className="containerss"  style={{textAlign:'center',  margin:'0px auto', whiteSpace:'no-wrap'}}>
 
 <strong>  <i className="fa fa-exclamation-circle" aria-hidden="true"></i></strong>  {error}!

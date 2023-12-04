@@ -104,8 +104,10 @@ const [filterBtn, setFilterBtn] = useState(true);
 
 
 
- const dateOfEntry = singleOrder?.createdAt
- const FormattedDate = (new Date(dateOfEntry))?.toString();
+
+ const dateOfEntry = singleOrder?.updatedAt
+
+ const FormattedDate = (new Date(dateOfEntry))?.toDateString();
 
 
 
@@ -201,8 +203,10 @@ const [filterBtn, setFilterBtn] = useState(true);
    const data =
    Orders &&
    Orders?.map((order) => {
-    var date = order?.createdAt,
-    newDate = (new Date(date))?.toString();
+    var date = order?.updatedAt
+  
+    
+ const newDate = (new Date(date))?.toDateString();
 
      return {
         "Date Of Entry":  newDate,
@@ -330,12 +334,12 @@ const [filterBtn, setFilterBtn] = useState(true);
           <br/>
 
           <DialogContentText id="alert-dialog-description">
-        Product : {singleOrder?.cartId?.cartItems?.[0]?.productId?.category}
+        Product : {singleOrder?.cartId?.cartItems?.[0]?.productId[0]?.category}
           </DialogContentText><br/>
 
 
           <DialogContentText id="alert-dialog-description">
-        Product  Setion : {singleOrder?.cartId?.cartItems?.[0]?.productId?.section}
+        Product  Setion : {singleOrder?.cartId?.cartItems?.[0]?.productId[0]?.section}
           </DialogContentText><br/>
 
 

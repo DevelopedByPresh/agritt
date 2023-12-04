@@ -131,6 +131,7 @@ import { jwtDecode } from "jwt-decode"
   const error = useSelector((state)=>state?.user?.error)
   const loading = useSelector((state)=>state?.user?.loading)
   const orders = useSelector((state)=>state?.user?.order)
+  console.log(orders)
  
 
 

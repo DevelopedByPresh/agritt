@@ -121,7 +121,7 @@ export const ClearError = () => (dispatch) => {
 
 export const CreateUsers = (data) => (dispatch) => {
     dispatch(isLoading());
-    axios.post(`http://localhost:5000/user/register`, data,)
+    axios.post(`${process.env.REACT_APP_API}/user/register`, data,)
       .then((response) => {
         dispatch(UserCreated(response?.data?.message));
      
@@ -137,7 +137,7 @@ export const CreateUsers = (data) => (dispatch) => {
 
   export const LoginUser = (data) => (dispatch) => {
     dispatch(isLoading());
-    axios.post(`http://localhost:5000/user/login`, data,)
+    axios.post(`${process.env.REACT_APP_API}/user/login`, data,)
       .then((response) => {
         dispatch(LoggedIn(response?.data?.message));
         sessionStorage.setItem('user', JSON.stringify(response?.data?.data))
@@ -175,7 +175,7 @@ export const CreateUsers = (data) => (dispatch) => {
        Authorization: `Bearer ${UserToken}`,
     };
   
-    axios.post(` http://localhost:5000/product/add`, data, {headers : authorization})
+    axios.post(`${process.env.REACT_APP_API}/product/add`, data, {headers : authorization})
       .then((response) => {
         dispatch(ProductsAdded(response?.data?.message));
    
@@ -213,7 +213,7 @@ export const GetProducts = () => (dispatch) => {
      Authorization: ` Bearer ${UserToken}`,
   };
 
-  axios.get(`http://localhost:5000/product/getAll/?category=${category}`,  { headers: authorization })
+  axios.get(`${process.env.REACT_APP_API}/product/getAll/?category=${category}`,  { headers: authorization })
     .then((response) => {
       dispatch(ProductsGotten(response?.data?.data));
     
@@ -243,7 +243,7 @@ export const GetOneProduct = () => (dispatch) => {
      Authorization: ` Bearer ${UserToken}`,
   };
 
-  axios.get(`http://localhost:5000/product/get/${id}`,  { headers: authorization })
+  axios.get(`${process.env.REACT_APP_API}/product/get/${id}`,  { headers: authorization })
     .then((response) => {
       dispatch(SingleProductGotten(response?.data?.data));
     
@@ -279,7 +279,7 @@ export const GetUser = () => (dispatch) => {
      Authorization: `Bearer ${UserToken}`,
   };
 
-  axios.get(`http://localhost:5000/user/get/${id}`, { headers: authorization })
+  axios.get(`${process.env.REACT_APP_API}/user/get/${id}`, { headers: authorization })
     .then((response) => {
       dispatch(UserGotten(response?.data?.data));
       sessionStorage.setItem('UpdateUser', JSON.stringify(response?.data?.data))
@@ -324,7 +324,7 @@ export const UpdateProfile = (profile) => (dispatch) => {
 
 
   dispatch(isLoading());
-  axios.patch(`http://localhost:5000/user/update-profile/${id}`, profile,  {headers:authorization})
+  axios.patch(`${process.env.REACT_APP_API}/user/update-profile/${id}`, profile,  {headers:authorization})
     .then((response) => {
       dispatch(ProfileUpdated(response?.data?.message));
       dispatch(GetUser());
@@ -375,7 +375,7 @@ export const AddToCart = (data) => (dispatch) => {
 
   dispatch(isLoading());
 
-  axios.post(`http://localhost:5000/cart/add`, data, { headers: authorization })
+  axios.post(`${process.env.REACT_APP_API}/cart/add`, data, { headers: authorization })
     .then((response) => {
       dispatch(ItemAdded(response?.data?.message));
 
@@ -411,7 +411,7 @@ export const GetCart = () => (dispatch) => {
       Authorization: `Bearer ${UserToken}`,
    };
  
-   axios.get(`http://localhost:5000/cart/${userId}?active=true`,  { headers: authorization })
+   axios.get(`${process.env.REACT_APP_API}/cart/${userId}?active=true`,  { headers: authorization })
      .then((response) => {
        dispatch(CartGotten(response?.data?.data?.cartItems));
     
@@ -445,7 +445,7 @@ export const DeleteCartItem = () => (dispatch) => {
      Authorization: `Bearer ${UserToken}`,
   };
 
-  axios.delete(`http://localhost:5000/cart/remove/${id}?productId=${productId}`,  { headers: authorization })
+  axios.delete(`${process.env.REACT_APP_API}/cart/remove/${id}?productId=${productId}`,  { headers: authorization })
     .then((response) => {
       dispatch(CartItemDeleted(response?.data?.message));
  
@@ -481,7 +481,7 @@ export const UpdateCart = (data) => (dispatch) => {
      Authorization: `Bearer ${UserToken}`,
   };
 
-  axios.patch(`http://localhost:5000/cart/updateItem/${id}`, data, { headers: authorization })
+  axios.patch(`${process.env.REACT_APP_API}/cart/updateItem/${id}`, data, { headers: authorization })
     .then((response) => {
       dispatch(CartUpdated(response?.data?.message));
 
@@ -505,7 +505,7 @@ export const UpdateCart = (data) => (dispatch) => {
 
 
 export const FinishOrder = (data) => (dispatch) => {
- // dispatch(isLoading());
+ dispatch(isLoading());
   const UserToken = sessionStorage.getItem('userToken');
   const id = sessionStorage.getItem("cartID")
 
@@ -515,7 +515,7 @@ export const FinishOrder = (data) => (dispatch) => {
      Authorization: `Bearer ${UserToken}`,
   };
 
-  axios.patch(`http://localhost:5000/cart/${id}`, data, { headers: authorization })
+  axios.patch(`${process.env.REACT_APP_API}/cart/${id}`, data, { headers: authorization })
     .then((response) => {
       dispatch(OrderSubmitted(response?.data?.message));
       dispatch(GetCart());
@@ -558,7 +558,7 @@ export const CreateOrder = (data) => (dispatch) => {
       Authorization: `Bearer ${UserToken}`,
    };
  
-   axios.post(`http://localhost:5000/order/add`, data, { headers: authorization })
+   axios.post(`${process.env.REACT_APP_API}/order/add`, data, { headers: authorization })
      .then((response) => {
        dispatch(OrderCreated(response?.data?.message));
        dispatch(GetProducts());
@@ -589,7 +589,7 @@ export const GetOrder = () => (dispatch) => {
       Authorization: `Bearer ${UserToken}`,
    };
  
-   axios.get(`http://localhost:5000/order/user/?id=${id}`,  { headers: authorization })
+   axios.get(`${process.env.REACT_APP_API}/order/user/?id=${id}`,  { headers: authorization })
      .then((response) => {
        dispatch(OrderGotten(response?.data?.data));
      
@@ -662,7 +662,7 @@ export const GetOrder = () => (dispatch) => {
    }
 
   
-    axios.post(`http://localhost:5000/pig/`, data, { headers: authorization })
+    axios.post(`${process.env.REACT_APP_API}/pig/`, data, { headers: authorization })
       .then((response) => {
         dispatch(PigRecord(response?.data?.message));
         dispatch(GetPigRecord());
@@ -697,7 +697,7 @@ export const GetOrder = () => (dispatch) => {
   }
 
  
-   axios.get(`http://localhost:5000/pig`,  { headers: authorization })
+   axios.get(`${process.env.REACT_APP_API}/pig`,  { headers: authorization })
      .then((response) => {
        dispatch(PigRecordGotten(response?.data?.data));
      
@@ -737,7 +737,7 @@ export const GetOrder = () => (dispatch) => {
    }
 
   
-    axios.post(`http://localhost:5000/poultry/`, data, { headers: authorization })
+    axios.post(`${process.env.REACT_APP_API}/poultry/`, data, { headers: authorization })
       .then((response) => {
         dispatch(PoultryRecord(response?.data?.message));
         dispatch(GetPoultryRecord());
@@ -772,7 +772,7 @@ export const GetOrder = () => (dispatch) => {
   }
 
  
-   axios.get(`http://localhost:5000/poultry`,  { headers: authorization })
+   axios.get(`${process.env.REACT_APP_API}/poultry`,  { headers: authorization })
      .then((response) => {
        dispatch(PoultryRecordGotten(response?.data?.data));
      
@@ -830,7 +830,7 @@ export const GetOrder = () => (dispatch) => {
    }
 
   
-    axios.post(`http://localhost:5000/fish/`, data, { headers: authorization })
+    axios.post(`${process.env.REACT_APP_API}/fish/`, data, { headers: authorization })
       .then((response) => {
         dispatch(FishRecord(response?.data?.message));
         dispatch(GetFishRecord());
@@ -865,7 +865,7 @@ export const GetOrder = () => (dispatch) => {
   }
 
  
-   axios.get(`http://localhost:5000/fish`,  { headers: authorization })
+   axios.get(`${process.env.REACT_APP_API}/fish`,  { headers: authorization })
      .then((response) => {
        dispatch(FishRecordGotten(response?.data?.data));
      
@@ -928,7 +928,7 @@ export const GetOrder = () => (dispatch) => {
    }
 
   
-    axios.post(`http://localhost:5000/egg/`, data, { headers: authorization })
+    axios.post(`${process.env.REACT_APP_API}/egg/`, data, { headers: authorization })
       .then((response) => {
         dispatch(EggRecord(response?.data?.message));
         dispatch(GetEggRecord());
@@ -964,7 +964,7 @@ export const GetOrder = () => (dispatch) => {
   }
 
  
-   axios.get(`http://localhost:5000/egg`,  { headers: authorization })
+   axios.get(`${process.env.REACT_APP_API}/egg`,  { headers: authorization })
      .then((response) => {
        dispatch(EggRecordGotten(response?.data?.data));
      

@@ -1,0 +1,129 @@
+
+
+
+// AUTHENTICATION START
+
+export const CREATE_USER = 'CREATE_USER';
+export const LOGIN = 'LOGIN';
+export const LOGOUT= 'LOGOUT';
+
+// AUTHENTICATION END
+
+
+
+
+
+// LOADING, MESSAGES, CLEAR MESSAGE AND ERROR START
+
+export const LOADING = 'LOADING';
+export const ERROR = 'ERROR';
+export const MESSAGE = 'MESSAGE';
+export const CLEAR = 'CLEAR';
+export const CLEARMESSAGE = 'CLEARMESSAGE';
+
+// LOADING, MESSAGES, CLEAR MESSAGE AND ERROR END
+
+
+
+
+// ADDING PRODUCTS START
+
+export const ADD_PRODUCTS = 'ADD_PRODUCTS';
+export const GET_ONE_PRODUCT = 'GET_ONE_PRODUCT';
+
+
+// ADDING PRODUCTS END
+
+
+
+// UPDATING PROFILE START
+export const UPDATE_PROFILE= 'UPDATE_PROFILE';
+
+
+// UPDATING PROFILE END
+
+
+
+
+// GETTIN USER START, Products
+
+export const GET_USER = 'GET_USER';
+export const GET_PRODUCT = 'GET_PRODUCT';
+
+// GETTING USER END
+
+
+
+
+// EVERYTHING THAT HAS TO DO WITH CART START
+
+export const ADD_TO_CART = 'ADD_TO_CART';
+export const GET_CART = 'GET_CART'
+export const DELETE_CART_ITEM = 'DELETE_CART_ITEM'
+export const UPDATE_CART = 'UPDATE_CART'
+export const INCREASE_QTY = 'INCREASE_QTY '
+export const DECREASE_QTY = 'DECREASE_QTY'
+export const FINISH_ORDER = 'FINISH_ORDER'
+export const ACTIVE = 'ACTIVE'
+export const CLEAR_CART = 'CLEAR_CART'
+export const UPDATE_CART_ITEM = 'UPDATE_CART_ITEM'
+
+// EVERYTHING THAT HAS TO DO WITH CART END
+
+
+// EVERYTHING THAT HAS TO DO WITH ORDER START
+
+
+export const GET_ORDER = 'GET_ORDER'
+export const CREATE_ORDER = 'CREATE_ORDER'
+
+// EVERYTHING THAT HAS TO DO WITH ORDER END
+
+
+
+
+
+
+
+// Egg Record Start
+export const CREATE_EGG_RECORD = 'CREATE_EGG_RECORD'
+export const GET_EGG_RECORD =    'GET_EGG_RECORD'
+export const UPDATE_EGG_RECORD = 'UPDATE_EGG_RECORD'
+export const DELETE_EGG_RECORD = 'DELETE_EGG_RECORD'
+export const GET_EGG_STATISTICS = 'GET_EGG_STATISTICS'
+
+// Egg Record End
+
+
+
+
+
+// Pig Record Start
+export const CREATE_PIG_RECORD = 'CREATE_PIG_RECORD'
+export const GET_PIG_RECORD =    'GET_PIG_RECORD'
+export const UPDATE_PIG_RECORD = 'UPDATE_PIG_RECORD'
+export const DELETE_PIG_RECORD = 'DELETE_PIG_RECORD'
+
+// Pig Record End
+
+
+
+
+// Poultry Record Start
+export const CREATE_POULTRY_RECORD = 'CREATE_POULTRY_RECORD'
+export const GET_POULTRY_RECORD =    'GET_POULTRY_RECORD'
+export const UPDATE_POULTRY_RECORD = 'UPDATE_POULTRY_RECORD'
+export const DELETE_POULTRY_RECORD = 'DELETE_POULTRY_RECORD'
+
+
+// Poultry Record End
+
+
+// FISH Record Start
+export const CREATE_FISH_RECORD = 'CREATE_FISH__RECORD'
+export const GET_FISH_RECORD =    'GET_FISH_RECORD'
+export const UPDATE_FISH_RECORD = 'UPDATE_FISH_RECORD'
+export const DELETE_FISH_RECORD = 'DELETE_FISH_RECORD'
+
+
+// FISH Record End

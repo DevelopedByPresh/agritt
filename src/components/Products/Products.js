@@ -688,7 +688,7 @@ const list = (anchor) => (
                 </div>:""}
 
 
-                {item?.productId?.category === 'Pig' && item?.productId?.section ==='Piglets' ?
+                {item?.productId[0]?.category === 'Pig' && item?.productId[0]?.section ==='Piglets' ?
                 <div className="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
                   <img src="https://thumbs.dreamstime.com/z/two-piglets-isolated-white-two-piglets-isolated-white-background-125596059.jpg?w=992"className="w-100" alt="product" />
                   <a href="#!">

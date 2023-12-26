@@ -308,7 +308,7 @@ const handleCloseNavMenu = () => {
 <div className="alert alert-danger danger alert-dismissible" role="alert" style={{width:'60%', margin:'0px auto'}}>
 <div className="containerss"  style={{textAlign:'center',  margin:'0px auto', whiteSpace:'no-wrap'}}>
 
-<strong>  <i className="fa fa-exclamation-circle" aria-hidden="true"></i></strong>  {error}, Please Fill out All Fields!
+<strong>  <i className="fa fa-exclamation-circle" aria-hidden="true"></i></strong>  {error}!
 
 
 
